@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="styles/main.css" </head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+    <body>
+        <!-- Search box -->
+        <form class='selectForm searchForm'>
+            <input id='search-field' , type='text' , placeholder="Search for a movie or user">
+        </form>
+
+        <div class='movies-container'>
+            <!-- This is the top 10 movies table -->
+            <table>
+                <!--  Handlebars template for universal top twenty movie -->
+                <tr>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+
+                </tr>
+            </table>
+        </div>
+
+        <!-- Search Result Box -->
+        <div class='search-result'>
+          <!-- Name -->
+            <h1>Halloween</h1>
+            <!-- Rating -->
+            <p class='rating'>3.5</p>
+            <!-- List of Top Users -->
+            <ul class='topUsers'>
+                <p class='topUserHead'>Top Users</p>
+                <li>User 1</li>
+                <li>User 2</li>
+                <li>User 3</li>
+                <li>User 4</li>
+                <li>User 5</li>
+            </ul>
+
+            <!-- Movie Rating Dropdown -->
+            <select id='movie-rating'>
+              <option>Rate</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="delete">Delete</option>
+            </select>
+            <!-- More Info Button linking to IMDB page -->
+            <button id='moreInfo'>More Info</button>
+
+        </div>
+
+        <script src='handlebars-v4.0.5.js'></script>
+        <script src='jquery-3.1.1.min.js'></script>
+        <script src="javascript/main.js"></script>
+    </body>
+</html>

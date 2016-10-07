@@ -1,0 +1,60 @@
+html {
+  background-image: url('assets/hero.jpg');
+  background-repeat: none;
+  background-size: cover;
+  font-family: 'Open Sans', sans-serif;
+}
+
+form {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  transform: translateX(-50%);
+  z-index: 2;
+  margin-top: 2%;
+}
+// when a search is done or a movie is clicked on, selectForm class is added via jquery to the form.
+.selectForm {
+  position: absolute;
+  top: 2.5%;
+}
+
+#search-field {
+  width: 200px;
+  height: 25px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+  outline: none;
+  border: 1px solid gray;
+  box-shadow: inset 1px 1px 4px gray;
+}
+
+.movies-container {
+  position: absolute;
+  top: 60%;
+  width: 100%;
+  background: rgba(black, 0.6);
+  transition: all 1s ease;
+}
+
+table {
+  width: 97%;
+  height: 61%;
+  margin-top: 2.5%;
+  margin-right: 1.5%;
+  text-align: center;
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 2.5%;
+  // display: none;
+
+  td {
+    padding: 10px;
+
+    &:hover {
+      color: black;
+      background: white;
+    }
+  }
+}
