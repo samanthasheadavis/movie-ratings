@@ -37,7 +37,7 @@ function MovieInfo(movieObject) {
       otherRatings: this.info.other_ratings
     };
     var html = template(context);
-    $('.content').prepend(html);
+    $('.search-result').prepend(html);
   };
 
   this.createElements();
@@ -49,7 +49,7 @@ function TopTwenty(movieObject) {
   this.info = {
     title: movieObject.title,
     userRating: movieObject.user_rating,
-    avgRating: movieObject.avg_rating,
+    avgRating: movieObject.avg_rating
   };
 //This formats the data to be inserted into the Handlebars template in the HTML.  It's possible we don't really need to use Handlebars here.  The Html for this can exist on load and just the values would be
   this.createElements2 = function() {
@@ -58,10 +58,10 @@ function TopTwenty(movieObject) {
     var context = {
       title: this.info.title,
       userRating: this.info.userRating,
-      avgRating: this.info.avgRating,
+      avgRating: this.info.avgRating
     };
     var html = template(context);
-    $('.content').prepend(html);
+    $('.movies-container').prepend(html);
   };
 
   this.createElements2();
