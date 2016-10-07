@@ -1,20 +1,99 @@
-console.clear();
-/**
-Define API Key to gain access to the movie database
-*/
+//If necessary
 var user = {
   apiKey: '84d2690223f00a8cc05141e0c91c56b8',
-  requestToken: null,
-  session: null,
-  validSession: false
 };
 
+//CONSTRUCTORS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+/**
+ This constructor creates one movie object for the search results
+*/
+function MovieInfo(movieObject) {
+  this.info = {
+    movieId: movieObject.id,
+    title: movieObject.title,
+    linkUrl: movieObject.link,
+    releaseDate: movieObject.release_date,
+    userRating: movieObject.user_rating,
+    //I think we will need to organize these two on the back end BEFORE they get to here to avoid a lot of extra steps
+    avgRating: movieObject.avg_rating,
+    otherUsers: movieObject.other_users,
+    //then we will have to get these by doing a separate search for their rating?  Seems lengthy.  Too ambitious?
+    otherRatings: movieObject.other_ratings
+  };
+//This formats the data to be inserted into the Handlebars template in the HTML
+  this.createElements = function() {
+    var source = $("#movie-template").html();
+    var template = Handlebars.compile(source);
+    var context = {
+      movieId: this.info.movieId,
+      title: this.info.title,
+      link: this.info.link,
+      date: this.info.releaseDate,
+      userRating: this.info.userRating,
+      avgRating: this.info.avgRating,
+      //Starting to feel like this is a lot of info to jockey around. Unless back end can give us a single node with all the other users and their attached ratings this may be too much
+      otherUsers: this.info.other_users,
+      otherRatings: this.info.other_ratings
+    };
+    var html = template(context);
+    $('.content').prepend(html);
+  };
+
+  this.createElements();
+}
+/**
+ This constructor creates smaller movie objects for the top twenty
+*/
+function TopTwenty(movieObject) {
+  this.info = {
+    title: movieObject.title,
+    userRating: movieObject.user_rating,
+    avgRating: movieObject.avg_rating,
+  };
+//This formats the data to be inserted into the Handlebars template in the HTML.  It's possible we don't really need to use Handlebars here.  The Html for this can exist on load and just the values would be
+  this.createElements2 = function() {
+    var source = $("#movie-template").html();
+    var template = Handlebars.compile(source);
+    var context = {
+      title: this.info.title,
+      userRating: this.info.userRating,
+      avgRating: this.info.avgRating,
+    };
+    var html = template(context);
+    $('.content').prepend(html);
+  };
+
+  this.createElements2();
+}
 
 
+//CALLS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+/**
+ Top twenty request call
+ */
+(function() {
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "https://api.themoviedb.org/3/search/movie?query=&api_key=" + user.apiKey,
+    "method": "GET",
+    "processData": false,
+    "data": "{}"
+  };
+
+  $.ajax(settings).done(function(response) {
+    // NOT sure this is the function we will actually need but something will have to tell it to make 20 copies.  But how are we gonna determine what the top twenty are? There will have to be an evaluation before this is sent to the constructor.
+    for (var index = 0; index < 20; index++) {
+      new TopTwenty(response.results[index]);
+    }
+  });
+})();
 
 
 /**
- Create a function to send the base search request, sending the results to the movie details constructor
+ Search request call
  */
 function movieSearch(searchString) {
   var settings = {
@@ -27,40 +106,32 @@ function movieSearch(searchString) {
   };
 
   $.ajax(settings).done(function(response) {
-    return new MovieDetails(response.results[0]);
+    return new MovieInfo(response.results[0]);
   });
-
 }
 
 /**
- Create a constructor that will build our movie details previews
-*/
-function MovieDetails(movieObject) {
-  console.log(movieObject);
-  this.info = {
-    movieId: movieObject.id,
-    title: movieObject.title,
-    overview: movieObject.overview,
-    poster: 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + movieObject.poster_path
+ This call will return info for the "otherUsers" selected and push for 5 MovieInfo objects to be created
+ */
+function otherUserMovies(userId) {
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "https://api.themoviedb.org/3/movie/" + encodeURIComponent(userId) + "/similar?api_key=" + user.apiKey,
+    "method": "GET",
+    "processData": false,
+    "data": "{}"
   };
 
-  this.createElements = function() {
-    var source = $("#movie-template").html();
-    var template = Handlebars.compile(source);
-    var context = {
-      movieId: this.info.movieId,
-      title: this.info.title,
-      image: this.info.poster,
-      overview: this.info.overview
-    };
-    var html = template(context);
-    $('.content').prepend(html);
-  };
-
-  this.createElements();
+  $.ajax(settings).done(function(response) {
+    $('.content').html('');
+    for (var index = 0; index < 5; index++) {
+      new MovieInfo(response.results[index]);
+    }
+  });
 }
 
-
+//This call handles rating functions and links to the deleteRating function
 function rateMovie(movieId, movieRating) {
   if (movieRating === 'delete') {
     deleteRating(movieId);
@@ -83,6 +154,7 @@ function rateMovie(movieId, movieRating) {
   }
 }
 
+//call to delete user rating
 function deleteRating(movieId) {
   var settings = {
     "async": true,
@@ -101,9 +173,10 @@ function deleteRating(movieId) {
   });
 }
 
-/**
- Handle the form submit, preventing the default behavior and formatting the search string
- */
+
+//EVENT DELEGATORS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+//EVENT DELEGATOR:  Search field/Submit button
 $('form').submit(function(event) {
   event.preventDefault();
   var searchString = $('#search-field').val();
@@ -111,8 +184,14 @@ $('form').submit(function(event) {
   movieSearch(searchString);
 });
 
+//EVENT DELEGATOR:  OtherUser click
+$('.contaner').on('click', '.otherUsers', function(event) {
+//some way here of getting the user id from the user name clicked.  there may need to be five of these, a unique one for each possible choice
+  otherUserMovies(userId);
+});
+
 /**
- Use event delegation to assign click events to the close icons
+ EVENT DELEGATOR:  Close Button
  */
 $('.container').on('click', '.close', function(event) {
   $(this).parents('.movie-container').slideUp(function() {
@@ -120,10 +199,8 @@ $('.container').on('click', '.close', function(event) {
   });
 });
 
-
-
 /**
-Use event delegation to link to drop down to the rate function
+EVENT DELEGATORS:  Drop down ratings box
 */
 $('.container').on('change', '.movie-rating', function() {
   var rating = $(this).val();
