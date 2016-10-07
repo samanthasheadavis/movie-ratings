@@ -1,48 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Movie Ratings</title>
-    <link rel="stylesheet" href="styles/main.css">
-  </head>
-  <body>
-    <div class="container">
-  <h1>Movie Details</h1>
-  <aside>
-    <form autocomplete='off'>
-      <input id="search-field" type="text" name="movie-name" placeholder="Search...">
-      <input type="submit" value="Find Movie">
-    </form>
-  </aside>
-  <div class="content"></div>
-</div>
 
-<script id="movie-template" type="text/x-handlebars-template">
-  <div class="movie-container">
-    <img src="{{image}}">
-    <div>
-      <h2>{{title}}</h2>
-      <p>{{overview}}</p>
-      <select class="movie-rating" data-id="{{movieId}}">
-      <option>Rate</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-      <option value="delete">Delete</option>
-  </select>
-  </div>
-    <div class="close">X</div>
-  </div>
-</script>
-<script src="javascript/jquery-3.1.1.min.js"></script>
-<script src="javascript/handlebars-v4.0.5.js"></script>
-<script src="javascript/main.js"></script>
-</body>
+<head>
+    <link rel="stylesheet" href="styles/main.css" </head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+    <body>
+        <!-- Search box -->
+        <form class='selectForm searchForm'>
+            <input id='search-field' , type='text' , placeholder="Search for a movie or user">
+        </form>
+
+        <div class='movies-container'>
+            <!-- This is the top 10 movies table -->
+            <table>
+                <!--  Handlebars template for universal top twenty movie -->
+                <tr>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td>Title</td>
+
+                </tr>
+            </table>
+        </div>
+
+        <!-- Search Result Box -->
+        <div class='search-result'>
+          <!-- Name -->
+            <h1>Halloween</h1>
+            <!-- Rating -->
+            <p class='rating'>3.5</p>
+            <!-- List of Top Users -->
+            <ul class='topUsers'>
+                <p class='topUserHead'>Top Users</p>
+                <li>User 1</li>
+                <li>User 2</li>
+                <li>User 3</li>
+                <li>User 4</li>
+                <li>User 5</li>
+            </ul>
+
+            <!-- Movie Rating Dropdown -->
+            <select id='movie-rating'>
+              <option>Rate</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="delete">Delete</option>
+            </select>
+            <!-- More Info Button linking to IMDB page -->
+            <button id='moreInfo'>More Info</button>
+
+        </div>
+
+        <script src='handlebars-v4.0.5.js'></script>
+        <script src='jquery-3.1.1.min.js'></script>
+        <script src="javascript/main.js"></script>
+    </body>
 </html>
