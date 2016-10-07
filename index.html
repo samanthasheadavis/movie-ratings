@@ -11,43 +11,13 @@
             <input id='search-field' , type='text' , placeholder="Search for a movie or user">
         </form>
 
+        <script id='movie-template' type='text/x-handlebars-template'>
         <div class='movies-container'>
-            <!-- This is the top 10 movies table -->
-            <table>
-                <!--  Handlebars template for universal top twenty movie -->
-                <tr>
-                    <td>Title</td>
-                    <td>Title</td>
-                    <td>Title</td>
-                    <td>Title</td>
-                    <td>Title</td>
-                </tr>
-                <tr>
-                    <td>Title</td>
-                    <td>Title</td>
-                    <td>Title</td>
-                    <td>Title</td>
-                    <td>Title</td>
-
-                </tr>
-                <tr>
-                    <td>Title</td>
-                    <td>Title</td>
-                    <td>Title</td>
-                    <td>Title</td>
-                    <td>Title</td>
-
-                </tr>
-                <tr>
-                    <td>Title</td>
-                    <td>Title</td>
-                    <td>Title</td>
-                    <td>Title</td>
-                    <td>Title</td>
-
-                </tr>
-            </table>
+            <!-- This is the top 20 movies table -->
+            <h2>{{title}}</h2>
+            <p>{{aveRating}}<p>
         </div>
+      </script>
 
         <!-- Search Result Box -->
         <div class='search-result'>
@@ -80,8 +50,8 @@
 
         </div>
 
-        <script src='handlebars-v4.0.5.js'></script>
-        <script src='jquery-3.1.1.min.js'></script>
+        <script src='javascript/handlebars-v4.0.5.js'></script>
+        <script src='javascript/jquery-3.1.1.min.js'></script>
         <script src="javascript/main.js"></script>
     </body>
 </html>
