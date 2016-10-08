@@ -12,7 +12,7 @@ def load_item
 
     Movie.create(
     id: id,
-    title: title,
+    title: title
     )
   end
 end
