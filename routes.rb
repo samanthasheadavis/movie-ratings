@@ -11,6 +11,10 @@ configure do
   enable :cross_origin
 end
 
+options '/*' do
+  response["Access-Control-Allow-Headers"] = "origin, x-requested-with, content-type"
+end
+
 after do
   ActiveRecord::Base.connection.close
 end
