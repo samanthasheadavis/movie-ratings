@@ -3,6 +3,13 @@ require 'active_record'
 require_relative 'movie'
 require_relative 'rating'
 require_relative 'environment'
+require "sinatra/cross_origin"
+
+register Sinatra::CrossOrigin
+
+configure do
+  enable :cross_origin
+end
 
 after do
   ActiveRecord::Base.connection.close
