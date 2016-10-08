@@ -9,6 +9,7 @@ var user = {
  This constructor creates one movie object for the search results
 */
 function MovieInfo(movieObject) {
+  console.log(movieObject);
   if (movieObject === undefined) {
     $('.search-result').html('MOVIE NOT FOUND');
   }
