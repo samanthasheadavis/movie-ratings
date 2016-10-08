@@ -54,10 +54,12 @@ button {
 }
 
 .top-twenty {
-  height: 150px;
+  height: 700px;
   position: absolute;
-  display: inline-block;
-  height: 40%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  // height: 40%;
   width: 100%;
   top: 50%;
   color: white;
