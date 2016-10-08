@@ -31,11 +31,21 @@ form {
 }
 
 .movies-container {
-  position: absolute;
-  top: 60%;
-  width: 100%;
+  color: white;
+  height: 100px;
+  width: 15%;
+  float: left;
+  clear: both;
   background: rgba(black, 0.6);
   transition: all 1s ease;
+  margin: 20px 6.25%;
+  border: 3px solid dimgray;
+  border-radius: 5px;
+
+  h2 {
+    text-align: center;
+    line-height: 100px;
+  }
 }
 
 table {

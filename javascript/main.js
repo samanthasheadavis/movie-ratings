@@ -47,7 +47,6 @@ function MovieInfo(movieObject) {
  This constructor creates smaller movie objects for the top twenty
 */
 function TopTwenty(movieObject) {
-  console.log(movieObject);
   this.info = {
     title: movieObject.title,
     // userRating: movieObject.user_rating,
