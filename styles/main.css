@@ -78,7 +78,7 @@ form {
 .movies-container {
   color: white;
   height: 100px;
-  width: 15%;
+  min-width: 15%;
   float: left;
   clear: both;
   background: rgba(0, 0, 0, 0.6);
