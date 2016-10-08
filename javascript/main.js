@@ -129,7 +129,7 @@ function otherUserMovies(userId) {
 
   $.ajax(settings).done(function(response) {
     $('.content').html('');
-    $('.top-twenty').html('User' + userId + ': Top Five')
+    $('.top-twenty').html('User' + userId + ': Top Five');
     for (var index = 0; index < 5; index++) {
       new TopTwenty(response.results[index]);
     }
