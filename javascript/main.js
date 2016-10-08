@@ -9,7 +9,9 @@ var user = {
  This constructor creates one movie object for the search results
 */
 function MovieInfo(movieObject) {
-  console.log(movieObject);
+  if (movieObject === undefined) {
+    $('.search-result').html('MOVIE NOT FOUND');
+  }
   this.info = {
     movieId: movieObject.id,
     title: movieObject.title,
@@ -17,7 +19,7 @@ function MovieInfo(movieObject) {
     // releaseDate: movieObject.release_date,
     // userRating: movieObject.user_rating,
     //I think we will need to organize these two on the back end BEFORE they get to here to avoid a lot of extra steps
-    // avgRating: movieObject.avg_rating,
+    avgRating: movieObject.vote_average,
     // otherUsers: movieObject.other_users,
     //then we will have to get these by doing a separate search for their rating?  Seems lengthy.  Too ambitious?
     // otherRatings: movieObject.other_ratings
@@ -32,7 +34,7 @@ function MovieInfo(movieObject) {
       // link: this.info.link,
       // date: this.info.releaseDate,
       // userRating: this.info.userRating,
-      // avgRating: this.info.avgRating,
+      avgRating: this.info.avgRating,
       //Starting to feel like this is a lot of info to jockey around. Unless back end can give us a single node with all the other users and their attached ratings this may be too much
       // otherUsers: this.info.other_users,
       // otherRatings: this.info.other_ratings
@@ -107,7 +109,7 @@ function movieSearch(searchString) {
   };
 
   $.ajax(settings).done(function(response) {
-    console.log(response);
+    $('.search-result').html('');
     return new MovieInfo(response.results[0]);
   });
 }
@@ -127,8 +129,9 @@ function otherUserMovies(userId) {
 
   $.ajax(settings).done(function(response) {
     $('.content').html('');
+    $('.top-twenty').html('User' + userId + ': Top Five')
     for (var index = 0; index < 5; index++) {
-      new MovieInfo(response.results[index]);
+      new TopTwenty(response.results[index]);
     }
   });
 }
