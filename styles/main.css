@@ -149,10 +149,12 @@ button {
   height: 700px;
   position: absolute;
   display: flex;
-  flex-direction: column;
   flex-wrap: wrap;
   width: 100%;
   top: 50%;
   color: white; }
+  .top-twenty .top-twenty-text {
+    position: absolute;
+    height: 20px; }
 
 /*# sourceMappingURL=main.css.map */

@@ -57,11 +57,17 @@ button {
   height: 700px;
   position: absolute;
   display: flex;
-  flex-direction: column;
+  // flex-direction: column;
   flex-wrap: wrap;
   // height: 40%;
   width: 100%;
   top: 50%;
   color: white;
+
+  .top-twenty-text {
+    position: absolute;
+    // top: 45%;
+    height: 20px;
+  }
 
 }

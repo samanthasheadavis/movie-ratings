@@ -3,6 +3,17 @@ require 'active_record'
 require_relative 'movie'
 require_relative 'rating'
 require_relative 'environment'
+require "sinatra/cross_origin"
+
+register Sinatra::CrossOrigin
+
+configure do
+  enable :cross_origin
+end
+
+options '/*' do
+  response["Access-Control-Allow-Headers"] = "origin, x-requested-with, content-type"
+end
 
 after do
   ActiveRecord::Base.connection.close
