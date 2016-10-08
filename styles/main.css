@@ -76,11 +76,19 @@ form {
   box-shadow: inset 1px 1px 4px gray; }
 
 .movies-container {
-  position: absolute;
-  top: 60%;
-  width: 100%;
+  color: white;
+  height: 100px;
+  width: 15%;
+  float: left;
+  clear: both;
   background: rgba(0, 0, 0, 0.6);
-  transition: all 1s ease; }
+  transition: all 1s ease;
+  margin: 20px 6.25%;
+  border: 3px solid dimgray;
+  border-radius: 5px; }
+  .movies-container h2 {
+    text-align: center;
+    line-height: 100px; }
 
 table {
   width: 97%;
@@ -136,5 +144,14 @@ button {
   button:hover {
     background: red;
     color: black; }
+
+.top-twenty {
+  height: 150px;
+  position: absolute;
+  display: inline-block;
+  height: 40%;
+  width: 100%;
+  top: 50%;
+  color: white; }
 
 /*# sourceMappingURL=main.css.map */
