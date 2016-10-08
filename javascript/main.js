@@ -9,6 +9,7 @@ var user = {
  This constructor creates one movie object for the search results
 */
 function MovieInfo(movieObject) {
+  console.log(movieObject);
   if (movieObject === undefined) {
     $('.search-result').html('MOVIE NOT FOUND');
   }
@@ -48,9 +49,11 @@ function MovieInfo(movieObject) {
 /**
  This constructor creates smaller movie objects for the top twenty
 */
-function TopTwenty(movieObject) {
+function TopTwenty(movieObject, index) {
+  var listNumber = index +1;
   this.info = {
     title: movieObject.title,
+    list: listNumber,
     // userRating: movieObject.user_rating,
     // avgRating: movieObject.avg_rating
   };
@@ -60,6 +63,7 @@ function TopTwenty(movieObject) {
     var template = Handlebars.compile(source);
     var context = {
       title: this.info.title,
+      list: this.info.list,
       // userRating: this.info.userRating,
       // avgRating: this.info.avgRating
     };
@@ -89,7 +93,7 @@ function TopTwenty(movieObject) {
   $.ajax(settings).done(function(response) {
     // NOT sure this is the function we will actually need but something will have to tell it to make 20 copies.  But how are we gonna determine what the top twenty are? There will have to be an evaluation before this is sent to the constructor.
     for (var index = 0; index < 20; index++) {
-      new TopTwenty(response.results[index]);
+      new TopTwenty(response.results[index], index);
     }
   });
 })();
