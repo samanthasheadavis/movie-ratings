@@ -16,21 +16,22 @@ function MovieInfo(movieObject) {
         $('.search-result').html('MOVIE NOT FOUND');
     }
     this.info = {
-        movieId: movieObject.id,
-        title: movieObject.title,
-        otherUsers: otherUsersArray,
+        movieId: movieObject.movie_info.id,
+        title: movieObject.movie_info.title,
+        otherUsers: movieObject.top_users.map(function(a) {
+          return a.id;
+        }),
         // linkUrl: movieObject.link,
         // releaseDate: movieObject.release_date,
         // userRating: movieObject.user_rating,
         //I think we will need to organize these two on the back end BEFORE they get to here to avoid a lot of extra steps
-        // avgRating: movieObject.vote_average,
+        avgRating: movieObject.rating,
         //then we will have to get these by doing a separate search for their rating?  Seems lengthy.  Too ambitious?
         // otherRatings: movieObject.other_ratings
     };
     // console.log(this.info.otherUsers);
-  getOtherUsers(this.info.movieId);
-  getAvgRating(this.info.movieId);
-console.log(avgRating);
+  // getOtherUsers(this.info.movieId);
+  // getAvgRating(this.info.movieId);
     //This formats the data to be inserted into the Handlebars template in the HTML
     this.createElements = function() {
         var source = $("#movie-template").html();
@@ -41,7 +42,7 @@ console.log(avgRating);
             // link: this.info.link,
             // date: this.info.releaseDate,
             // userRating: this.info.userRating,
-            avgRating: avgRating,
+            avgRating: this.info.avgRating,
             //Starting to feel like this is a lot of info to jockey around. Unless back end can give us a single node with all the other users and their attached ratings this may be too much
             otherUsers: this.info.otherUsers
             // otherRatings: this.info.other_ratings
@@ -136,27 +137,14 @@ function getAvgRating(userId) {
   });
 }
 //This call handles rating functions and links to the deleteRating function
-function rateMovie(movieId, movieRating) {
-    if (movieRating === 'delete') {
-        deleteRating(movieId);
-    } else {
-        var settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": "https://api.themoviedb.org/3/movie/" + movieId + "/rating?session_id=" + user.session + "&api_key=" + user.apiKey,
-            "method": "POST",
-            "headers": {
-                "content-type": "application/json;charset=utf-8"
-            },
-            "processData": false,
-            "data": "{\n  \"value\": " + movieRating + "\n}"
-        };
-
-        $.ajax(settings).done(function(response) {
-            console.log(response);
-        });
-    }
-}
+// function rateMovie(movieId, movieRating) {
+//     if (movieRating === 'delete') {
+//         deleteRating(movieId);
+//     } else {
+//       $.post('http://localhost:9393/api/post/ratings/post');
+//         }
+//     }
+// }
 
 //call to delete user rating
 function deleteRating(movieId) {
