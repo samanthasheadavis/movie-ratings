@@ -4,7 +4,6 @@ require_relative 'environment'
 require_relative 'movie'
 require_relative 'rating'
 
-
 def load_data
   ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
   rating_list = CSV.read('./data/u.data', encoding: 'windows-1252', col_sep: "\t")
@@ -21,6 +20,5 @@ def load_data
   end
   ActiveRecord::Base.connection.close
 end
-
 
 load_data
