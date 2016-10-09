@@ -140,21 +140,8 @@ function rateMovie(movieId, movieRating) {
     if (movieRating === 'delete') {
         deleteRating(movieId);
     } else {
-        var settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": "https://api.themoviedb.org/3/movie/" + movieId + "/rating?session_id=" + user.session + "&api_key=" + user.apiKey,
-            "method": "POST",
-            "headers": {
-                "content-type": "application/json;charset=utf-8"
-            },
-            "processData": false,
-            "data": "{\n  \"value\": " + movieRating + "\n}"
-        };
-
-        $.ajax(settings).done(function(response) {
-            console.log(response);
-        });
+      $.post('http://localhost:9393/api/post/ratings/post');
+        }
     }
 }
 
