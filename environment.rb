@@ -4,7 +4,7 @@ require 'pg'
 ActiveRecord::Base.establish_connection(
   adapter:  'postgresql',
   host:     'localhost',
-  database: 'groupmovie',
-  username: 'danielgriffiths',
+  database: 'movies',
+  username: 'samanthadavis',
   password: ''
 )
