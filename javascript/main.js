@@ -11,6 +11,7 @@ var avgRating = null;
  This constructor creates one movie object for the search results
 */
 function MovieInfo(movieObject) {
+  console.log(movieObject);
     if (movieObject === undefined) {
         $('.search-result').html('MOVIE NOT FOUND');
     }
@@ -88,8 +89,9 @@ function TopTwenty(movieObject, index) {
  */
 (function() {
   $.get('http://localhost:9393/api/twenty/movies', function(response) {
+    console.log(response);
     for (var index =0; index<20; index++) {
-      new TopTwenty(response.results[index], index);
+      new TopTwenty(response[index], index);
     }
   });
 })();
