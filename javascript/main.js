@@ -21,12 +21,12 @@ function MovieInfo(movieObject) {
         // userRating: movieObject.user_rating,
         //I think we will need to organize these two on the back end BEFORE they get to here to avoid a lot of extra steps
         avgRating: movieObject.vote_average,
-        // otherUsers: movieObject.other_users,
+        otherUsers: movieObject.other_users,
         //then we will have to get these by doing a separate search for their rating?  Seems lengthy.  Too ambitious?
         // otherRatings: movieObject.other_ratings
     };
 
-  otherUserMovies(this.info.movieId);
+  otherUsers(this.info.movieId);
 
     //This formats the data to be inserted into the Handlebars template in the HTML
     this.createElements = function() {
@@ -42,7 +42,7 @@ function MovieInfo(movieObject) {
             // userRating: this.info.userRating,
             avgRating: this.info.avgRating,
             //Starting to feel like this is a lot of info to jockey around. Unless back end can give us a single node with all the other users and their attached ratings this may be too much
-            // otherUsers: this.info.other_users,
+            otherUsers: this.info.other_users,
             // otherRatings: this.info.other_ratings
         };
         var html = template(context);
@@ -59,7 +59,7 @@ function TopTwenty(movieObject, index) {
     this.info = {
         title: movieObject.title,
         list: listNumber,
-        // userRating: movieObject.user_rating,
+        userRating: movieObject.score,
         // avgRating: movieObject.avg_rating
     };
     //This formats the data to be inserted into the Handlebars template in the HTML.  It's possible we don't really need to use Handlebars here.  The Html for this can exist on load and just the values would be
@@ -69,7 +69,7 @@ function TopTwenty(movieObject, index) {
         var context = {
             title: this.info.title,
             list: this.info.list,
-            // userRating: this.info.userRating,
+            userRating: this.info.userRating,
             // avgRating: this.info.avgRating
         };
         var html = template(context);
@@ -116,14 +116,24 @@ function movieSearch(searchString) {
     });
 }
 
+
+//This is the call for five users who have also rated this movie
+function otherUsers(movieId) {
+    $.get('http://localhost:9393/api/ratings/top/five/' + movieId, function(response) {
+        for (count = 0; count < 5; count++) {
+            console.log(response[count]);
+        }
+    });
+}
+
 /**
  This call will return info for the "otherUsers" selected and push for 5 MovieInfo objects to be created
  */
 function otherUserMovies(userId) {
-    $.get('http://localhost:9393/api/ratings/top/five/' + userId, function(response) {
-        for (count = 0; count < 5; count++) {
-            console.log(response[count]);
-        }
+    $.get('http://localhost:9393/api/ratings/top/' + userId, function(response) {
+      for (count = 0; count < 5; count++) {
+        new TopTwenty(response[count]);
+      }
     });
 }
 
