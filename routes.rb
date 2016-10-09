@@ -38,7 +38,7 @@ end
 
 #20 movies !!!WORKING!!!
 get '/api/twenty/movies' do
-  movie = Movie.order.limit(20)
+  movie = Movie.limit(20)
   movie.to_json
 end
 
