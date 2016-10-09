@@ -2,35 +2,35 @@
 var user = {
     apiKey: '84d2690223f00a8cc05141e0c91c56b8',
 };
-
+var otherUsersArray = [];
+// console.log(otherUsersArray);
 //CONSTRUCTORS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 /**
  This constructor creates one movie object for the search results
 */
 function MovieInfo(movieObject) {
-    console.log(movieObject);
     if (movieObject === undefined) {
         $('.search-result').html('MOVIE NOT FOUND');
     }
     this.info = {
         movieId: movieObject.id,
         title: movieObject.title,
+        otherUsers: otherUsersArray
         // linkUrl: movieObject.link,
         // releaseDate: movieObject.release_date,
         // userRating: movieObject.user_rating,
         //I think we will need to organize these two on the back end BEFORE they get to here to avoid a lot of extra steps
-        avgRating: movieObject.vote_average,
-        otherUsers: movieObject.other_users,
+        // avgRating: movieObject.vote_average,
         //then we will have to get these by doing a separate search for their rating?  Seems lengthy.  Too ambitious?
         // otherRatings: movieObject.other_ratings
     };
-
+    // console.log(this.info.otherUsers);
   otherUsers(this.info.movieId);
 
     //This formats the data to be inserted into the Handlebars template in the HTML
     this.createElements = function() {
-        console.log(this.info.movieId);
+      console.log(typeof otherUsersArray);
 
         var source = $("#movie-template").html();
         var template = Handlebars.compile(source);
@@ -40,11 +40,12 @@ function MovieInfo(movieObject) {
             // link: this.info.link,
             // date: this.info.releaseDate,
             // userRating: this.info.userRating,
-            avgRating: this.info.avgRating,
+            // avgRating: this.info.avgRating,
             //Starting to feel like this is a lot of info to jockey around. Unless back end can give us a single node with all the other users and their attached ratings this may be too much
-            otherUsers: this.info.other_users,
+            otherUsers: this.info.otherUsers
             // otherRatings: this.info.other_ratings
         };
+
         var html = template(context);
         $('.search-result').prepend(html);
     };
@@ -111,7 +112,7 @@ function movieSearch(searchString) {
 
     $.get('http://localhost:9393/api/get/movie/' + encodeURIComponent(searchString), function(response) {
         $('.search-result').html('');
-        return new MovieInfo(response);
+        return new MovieInfo(response[0]);
 
     });
 }
@@ -121,7 +122,7 @@ function movieSearch(searchString) {
 function otherUsers(movieId) {
     $.get('http://localhost:9393/api/ratings/top/five/' + movieId, function(response) {
         for (count = 0; count < 5; count++) {
-            console.log(response[count]);
+            otherUsersArray.push(response[count].id);
         }
     });
 }
