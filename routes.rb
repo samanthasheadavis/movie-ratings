@@ -37,7 +37,7 @@ get '/api/get/movie/:title' do |title|
   movie_info.to_json
 
   rating = Rating.select(:score).where(movie_id: movie_info[:id]).average(:score)
-  rating.to_json
+  movie_info[rating.to_json
 
   top_users = Rating.all.where(movie_id: movie_info[:id]).where(score: 5).limit(5)
   top_users.to_json
@@ -45,7 +45,7 @@ end
 
 #20 movies !!!WORKING!!!
 get '/api/twenty/movies' do
-  movie = Movie.order.limit(20)
+  movie = Movie.limit(20)
   movie.to_json
 end
 
