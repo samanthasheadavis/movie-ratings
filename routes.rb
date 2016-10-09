@@ -19,7 +19,6 @@ options '/*' do
   response["Access-Control-Allow-Headers"] = "origin, x-requested-with, content-type"
 end
 
-#post movie with title !!!WORKING!!!
 post '/api/movies/title' do
   movie = Movie.new(title: params[:title])
    if movie.valid? && movie.save
@@ -27,36 +26,32 @@ post '/api/movies/title' do
      movie.to_json
    else
      status 400
-  end
+   end
 end
 
-#get movie by title  !!!WORKING!!!
 get '/api/get/movie/:title' do |title|
   movie_data = Movie.where(["title LIKE ?", "%#{params[:title]}%"])
   movie_info = movie_data[0]
-  movie_info.to_json
-
+  #movie_info.to_json
   rating = Rating.select(:score).where(movie_id: movie_info[:id]).average(:score)
-  rating.to_json
-
+  #rating.to_json
   top_users = Rating.all.where(movie_id: movie_info[:id]).where(score: 5).limit(5)
-  top_users.to_json
+  #top_users.to_json
+  payload = {'movie_info' => movie_info, 'rating' => rating, 'top_users' => top_users}
+  payload.to_json
 end
 
-#20 movies !!!WORKING!!!
 get '/api/twenty/movies' do
   movie = Movie.limit(20)
   movie.to_json
 end
 
-#delete movie by title  !!!WORKING!!!
 delete '/api/delete/movie/:title' do |title|
   movie = Movie.find_by(title: title)
   movie.destroy
   nil
 end
 
-#post rating through user with movie_id>>movie.id(title) !!!WORKING!!!
 post '/api/post/ratings/post' do
   rating = Rating.new(movie_id: params[:movie_id], user_id: params[:user_id], score: params[:score])
   if rating.valid? && rating.save
@@ -67,31 +62,26 @@ post '/api/post/ratings/post' do
   end
 end
 
-#get all ratings for user_id !!!WORKING!!!
 get '/api/ratings/of/user/:user_id' do |user_id|
- ratings = Rating.all.where(user_id: user_id)
- ratings.to_json
+  ratings = Rating.all.where(user_id: user_id)
+  ratings.to_json
 end
 
-#get all ratings for user_id where rating is 5 !!!WORKING!!!
 get '/api/ratings/top/:user_id' do |user_id|
- ratings = Rating.all.where(user_id: user_id).where(score: 5)
- ratings.to_json
+  ratings = Rating.all.where(user_id: user_id).where(score: 5)
+  ratings.to_json
 end
 
-#get 5, 5 star ratings for movie_id !!!WORKING!!!
 get '/api/ratings/top/five/:movie_id' do |movie_id|
   ratings = Rating.all.where(movie_id: movie_id).where(score: 5).limit(5)
   ratings.to_json
 end
 
- #get rating average for movie_id !!!WORKING!!!
-  get '/api/ratings/movie/avg/:movie_id' do |movie_id|
-   ratings = Rating.select(:score).where(movie_id: movie_id).average(:score)
-   ratings.to_json
+get '/api/ratings/movie/avg/:movie_id' do |movie_id|
+  ratings = Rating.select(:score).where(movie_id: movie_id).average(:score)
+  ratings.to_json
 end
 
-#delete all reviews from user !!!PROBS WORKING NOT GONNA TEST LOL!!!
 delete '/api/ratings/delete/:user_id' do |user_id|
   ratings = Rating.all.where(user_id: user_id)
   ratings.destroy
