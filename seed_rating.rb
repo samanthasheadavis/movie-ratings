@@ -6,6 +6,7 @@ require_relative 'rating'
 
 
 def load_data
+  ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
   rating_list = CSV.read('./data/u.data', encoding: 'windows-1252', col_sep: "\t")
   rating_list.each do |row|
     movie_id = row[0].to_i
@@ -18,6 +19,7 @@ def load_data
     score: score
     )
   end
+  ActiveRecord::Base.connection.close
 end
 
 
