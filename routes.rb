@@ -11,16 +11,12 @@ configure do
   enable :cross_origin
 end
 
-options '/*' do
-  response["Access-Control-Allow-Headers"] = "origin, x-requested-with, content-type"
-end
-
-after do
-  ActiveRecord::Base.connection.close
-end
-
 before do
   content_type :json
+end
+
+options '/*' do
+  response["Access-Control-Allow-Headers"] = "origin, x-requested-with, content-type"
 end
 
 #post movie with title !!!WORKING!!!
@@ -36,13 +32,13 @@ end
 
 #get movie by title  !!!WORKING!!!
 get '/api/get/movie/:title' do |title|
-  movie = Movie.find_by(title: title)
+  movie = Movie.where(["title LIKE ?", "%#{params[:title]}%"])
   movie.to_json
 end
 
-#-----------------------movie = Movie.includes(:id)
-get '/api/movies' do
-  movie = Movie.all
+#20 movies !!!WORKING!!!
+get '/api/twenty/movies' do
+  movie = Movie.order.limit(20)
   movie.to_json
 end
 
