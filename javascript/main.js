@@ -87,14 +87,14 @@ function TopTwenty(movieObject, index) {
 /**
  Top twenty request call
  */
-(function() {
-  $.get('http://localhost:9393/api/twenty/movies', function(response) {
-    console.log(response);
-    for (var index =0; index<20; index++) {
-      new TopTwenty(response[index], index);
-    }
-  });
-})();
+ (function() {
+   $.get('http://localhost:9393/api/twenty/movies', function(response) {
+     console.log(response);
+     for (var index =0; index<20; index++) {
+       new TopTwenty(response[index], index);
+     }
+   });
+ })();
 
 
 /**
@@ -104,7 +104,7 @@ function movieSearch(searchString) {
 
     $.get('http://localhost:9393/api/get/movie/' + encodeURIComponent(searchString), function(response) {
         $('.search-result').html('');
-        return new MovieInfo(response[0]);
+        return new MovieInfo(response);
 
     });
 }
