@@ -87,21 +87,11 @@ function TopTwenty(movieObject, index) {
  Top twenty request call
  */
 (function() {
-    var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "https://api.themoviedb.org/3/search/movie?query=Halloween&api_key=" + user.apiKey,
-        "method": "GET",
-        "processData": false,
-        "data": "{}"
-    };
-
-    $.ajax(settings).done(function(response) {
-        // NOT sure this is the function we will actually need but something will have to tell it to make 20 copies.  But how are we gonna determine what the top twenty are? There will have to be an evaluation before this is sent to the constructor.
-        for (var index = 0; index < 20; index++) {
-            new TopTwenty(response.results[index], index);
-        }
-    });
+  $.get('http://localhost:9393/api/twenty/movies', function(response) {
+    for (var index =0; index<20; index++) {
+      new TopTwenty(response.results[index], index);
+    }
+  });
 })();
 
 
