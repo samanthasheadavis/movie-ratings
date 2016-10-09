@@ -32,13 +32,20 @@ end
 
 #get movie by title  !!!WORKING!!!
 get '/api/get/movie/:title' do |title|
-  movie = Movie.where(["title LIKE ?", "%#{params[:title]}%"])
-  movie.to_json
+  movie_data = Movie.where(["title LIKE ?", "%#{params[:title]}%"])
+  movie_info = movie_data[0]
+  movie_info.to_json
+
+  rating = Rating.select(:score).where(movie_id: movie_info[:id]).average(:score)
+  rating.to_json
+
+  top_users = Rating.all.where(movie_id: movie_info[:id]).where(score: 5).limit(5)
+  top_users.to_json
 end
 
 #20 movies !!!WORKING!!!
 get '/api/twenty/movies' do
-  movie = Movie.limit(20)
+  movie = Movie.order.limit(20)
   movie.to_json
 end
 
@@ -74,14 +81,14 @@ end
 
 #get 5, 5 star ratings for movie_id !!!WORKING!!!
 get '/api/ratings/top/five/:movie_id' do |movie_id|
- ratings = Rating.all.where(movie_id: movie_id).where(score: 5).limit(5)
- ratings.to_json
+  ratings = Rating.all.where(movie_id: movie_id).where(score: 5).limit(5)
+  ratings.to_json
 end
 
-#get rating average for movie_id !!!WORKING!!!
-get '/api/ratings/movie/avg/:movie_id' do |movie_id|
- ratings = Rating.select(:score).where(movie_id: movie_id).average(:score)
- ratings.to_json
+ #get rating average for movie_id !!!WORKING!!!
+  get '/api/ratings/movie/avg/:movie_id' do |movie_id|
+   ratings = Rating.select(:score).where(movie_id: movie_id).average(:score)
+   ratings.to_json
 end
 
 #delete all reviews from user !!!PROBS WORKING NOT GONNA TEST LOL!!!
