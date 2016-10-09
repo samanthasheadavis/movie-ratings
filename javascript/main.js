@@ -3,6 +3,7 @@ var user = {
     apiKey: '84d2690223f00a8cc05141e0c91c56b8',
 };
 var otherUsersArray = [];
+var avgRating = null;
 // console.log(otherUsersArray);
 //CONSTRUCTORS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -16,7 +17,7 @@ function MovieInfo(movieObject) {
     this.info = {
         movieId: movieObject.id,
         title: movieObject.title,
-        otherUsers: otherUsersArray
+        otherUsers: otherUsersArray,
         // linkUrl: movieObject.link,
         // releaseDate: movieObject.release_date,
         // userRating: movieObject.user_rating,
@@ -26,12 +27,11 @@ function MovieInfo(movieObject) {
         // otherRatings: movieObject.other_ratings
     };
     // console.log(this.info.otherUsers);
-  otherUsers(this.info.movieId);
-
+  getOtherUsers(this.info.movieId);
+  getAvgRating(this.info.movieId);
+console.log(avgRating);
     //This formats the data to be inserted into the Handlebars template in the HTML
     this.createElements = function() {
-      console.log(typeof otherUsersArray);
-
         var source = $("#movie-template").html();
         var template = Handlebars.compile(source);
         var context = {
@@ -40,7 +40,7 @@ function MovieInfo(movieObject) {
             // link: this.info.link,
             // date: this.info.releaseDate,
             // userRating: this.info.userRating,
-            // avgRating: this.info.avgRating,
+            avgRating: avgRating,
             //Starting to feel like this is a lot of info to jockey around. Unless back end can give us a single node with all the other users and their attached ratings this may be too much
             otherUsers: this.info.otherUsers
             // otherRatings: this.info.other_ratings
@@ -71,7 +71,7 @@ function TopTwenty(movieObject, index) {
             title: this.info.title,
             list: this.info.list,
             userRating: this.info.userRating,
-            // avgRating: this.info.avgRating
+            avgRating: this.info.avgRating
         };
         var html = template(context);
         $('.top-twenty').append(html);
@@ -119,7 +119,7 @@ function movieSearch(searchString) {
 
 
 //This is the call for five users who have also rated this movie
-function otherUsers(movieId) {
+function getOtherUsers(movieId) {
     $.get('http://localhost:9393/api/ratings/top/five/' + movieId, function(response) {
         for (count = 0; count < 5; count++) {
             otherUsersArray.push(response[count].id);
@@ -130,14 +130,19 @@ function otherUsers(movieId) {
 /**
  This call will return info for the "otherUsers" selected and push for 5 MovieInfo objects to be created
  */
-function otherUserMovies(userId) {
+function getOtherUserMovies(userId) {
     $.get('http://localhost:9393/api/ratings/top/' + userId, function(response) {
       for (count = 0; count < 5; count++) {
         new TopTwenty(response[count]);
       }
     });
 }
-
+// call for average rating given user id
+function getAvgRating(userId) {
+  $.get('http://localhost:9393/api/ratings/movie/avg/' + userId, function(response) {
+    avgRating = response;
+  });
+}
 //This call handles rating functions and links to the deleteRating function
 function rateMovie(movieId, movieRating) {
     if (movieRating === 'delete') {
@@ -192,7 +197,7 @@ $('form').submit(function(event) {
 });
 
 //EVENT DELEGATOR:  OtherUser click
-$('.contaner').on('click', '.otherUsers', function(event) {
+$('.container').on('click', '.otherUsers', function(event) {
     //some way here of getting the user id from the user name clicked.  there may need to be five of these, a unique one for each possible choice
     otherUserMovies(userId);
 });
