@@ -32,11 +32,11 @@ end
 get '/api/get/movie/:title' do |title|
   movie_data = Movie.where(["title LIKE ?", "%#{params[:title]}%"])
   movie_info = movie_data[0]
-  #movie_info.to_json
+
   rating = Rating.select(:score).where(movie_id: movie_info[:id]).average(:score)
-  #rating.to_json
+
   top_users = Rating.all.where(movie_id: movie_info[:id]).where(score: 5).limit(5)
-  #top_users.to_json
+
   payload = {'movie_info' => movie_info, 'rating' => rating, 'top_users' => top_users}
   payload.to_json
 end
@@ -46,10 +46,9 @@ get '/api/twenty/movies' do
   movie.to_json
 end
 
-delete '/api/delete/movie/:title' do |title|
-  movie = Movie.find_by(title: title)
-  movie.destroy
-  nil
+get '/api/delete/movie/:id' do |id|
+  movie = Movie.find_by(id: id)
+  movie.to_json
 end
 
 post '/api/post/ratings/post' do
