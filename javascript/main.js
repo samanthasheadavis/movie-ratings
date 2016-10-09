@@ -210,4 +210,5 @@ $('.container').on('change', '.movie-rating', function() {
     var rating = $(this).val();
     var movieId = $(this).attr('data-id');
     rateMovie(movieId, rating);
+    console.log(movieId, rating);
 });
