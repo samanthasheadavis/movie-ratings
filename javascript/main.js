@@ -19,13 +19,13 @@ function MovieInfo(movieObject) {
         movieId: movieObject.movie_info.id,
         title: movieObject.movie_info.title,
         otherUsers: movieObject.top_users.map(function(a) {
-          return a.id;
+          return a.user_id;
         }),
         // linkUrl: movieObject.link,
         // releaseDate: movieObject.release_date,
         // userRating: movieObject.user_rating,
         //I think we will need to organize these two on the back end BEFORE they get to here to avoid a lot of extra steps
-        avgRating: movieObject.rating,
+        avgRating: Math.round(movieObject.rating * 100)/100,
         //then we will have to get these by doing a separate search for their rating?  Seems lengthy.  Too ambitious?
         // otherRatings: movieObject.other_ratings
     };
@@ -90,7 +90,6 @@ function TopTwenty(movieObject, index) {
  */
  (function() {
    $.get('http://localhost:9393/api/twenty/movies', function(response) {
-     console.log(response);
      for (var index =0; index<20; index++) {
        new TopTwenty(response[index], index);
      }
@@ -110,23 +109,15 @@ function movieSearch(searchString) {
     });
 }
 
-
-//This is the call for five users who have also rated this movie
-function getOtherUsers(movieId) {
-    $.get('http://localhost:9393/api/ratings/top/five/' + movieId, function(response) {
-        for (count = 0; count < 5; count++) {
-            otherUsersArray.push(response[count].id);
-        }
-    });
-}
-
 /**
  This call will return info for the "otherUsers" selected and push for 5 MovieInfo objects to be created
  */
 function getOtherUserMovies(userId) {
+  $('.top-twenty').html('');
     $.get('http://localhost:9393/api/ratings/top/' + userId, function(response) {
       for (count = 0; count < 5; count++) {
-        new TopTwenty(response[count]);
+        console.log(response[count]);
+        new TopTwenty(response[count], count);
       }
     });
 }
@@ -136,34 +127,24 @@ function getAvgRating(userId) {
     avgRating = response;
   });
 }
-//This call handles rating functions and links to the deleteRating function
-// function rateMovie(movieId, movieRating) {
-//     if (movieRating === 'delete') {
-//         deleteRating(movieId);
-//     } else {
-//       $.post('http://localhost:9393/api/post/ratings/post');
-//         }
-//     }
-// }
+
+// This call handles rating functions and links to the deleteRating function
+function rateMovie(movieId, userId, score) {
+    if (movieRating === 'delete') {
+        deleteRating(movieId);
+    } else {
+      $.post('http://localhost:9393/api/post/ratings/post/' + movieId + '/1700/' + score);
+        }
+    }
+
 
 //call to delete user rating
-function deleteRating(movieId) {
-    var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "https://api.themoviedb.org/3/movie/" + movieId + "/rating?session_id=" + user.session + "&api_key=" + user.apiKey,
-        "method": "DELETE",
-        "headers": {
-            "content-type": "application/json;charset=utf-8"
-        },
-        "processData": false,
-        "data": "{}"
-    };
-
-    $.ajax(settings).done(function(response) {
-        console.log(response);
-    });
-}
+// function deleteRating(movieId) {
+//   $.delete('http://localhost:9393/api/post/ratings/post/' + movieId + '/1700');
+//   function(response) {
+//         console.log(response);
+//     });
+// }
 
 
 //EVENT DELEGATORS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -177,26 +158,24 @@ $('form').submit(function(event) {
 });
 
 //EVENT DELEGATOR:  OtherUser click
-$('.container').on('click', '.otherUsers', function(event) {
-    //some way here of getting the user id from the user name clicked.  there may need to be five of these, a unique one for each possible choice
-    otherUserMovies(userId);
+$('.container').on('click', '.users', function(event) {
+  var userIdOnClick = $(this).html();
+  $('.top-twenty-text').html('User # ' + userIdOnClick + ' Top Five Movies');
+    getOtherUserMovies(userIdOnClick);
 });
 
-/**
- EVENT DELEGATOR:  Close Button
- */
-$('.container').on('click', '.close', function(event) {
-    $(this).parents('.movie-container').slideUp(function() {
-        $(this).remove();
-    });
+// EVENT DELEGATOR;  Tp twenty to searchString
+$('.container').on('click', '.movies-container', function(event) {
+  var topTwentyOnClick = $(this).find('span').html();
+  console.log(topTwentyOnClick);
+  movieSearch(topTwentyOnClick);
 });
-
 /**
 EVENT DELEGATORS:  Drop down ratings box
 */
 $('.container').on('change', '.movie-rating', function() {
-    var rating = $(this).val();
+    var score = $(this).val();
     var movieId = $(this).attr('data-id');
-    rateMovie(movieId, rating);
-    console.log(movieId, rating);
+    rateMovie(movieId, score);
+    // console.log(movieId, rating);
 });
