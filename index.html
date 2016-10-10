@@ -24,9 +24,7 @@
                 {{#each otherUsers}}
                 <li class="users">{{this}}</li>
                 {{/each}}
-
             </ul>
-
             <select class="movie-rating" data-id={{movieId}}
               <option>Rate</option>
               <option value="1">1</option>
@@ -42,6 +40,7 @@
         <section class="top-twenty">
           <div class='top-twenty-text'>Current Top Twenty(by users ratings)</div>
           </section>
+
 <!--Top Twenty Template-->
         <script id='top-twenty-template' type='text/x-handlebars-template'>
              <div class='movies-container'>
@@ -53,5 +52,4 @@
         <script src='javascript/jquery-3.1.1.min.js'></script>
         <script src="javascript/main.js"></script>
     </body>
-
 </html>

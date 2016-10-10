@@ -86,7 +86,7 @@ function TopTwenty(movieObject, index) {
 //CALLS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 /**
- Top twenty request call
+ Top twenty request call. IIF
  */
  (function() {
    $.get('http://localhost:9393/api/twenty/movies', function(response) {
