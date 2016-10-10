@@ -1,6 +1,6 @@
 #Clean Final
 require 'csv'
-require_relative 'schema'
+require_relative 'routes'
 require_relative 'environment'
 require_relative 'movie'
 require_relative 'rating'
