@@ -15,6 +15,13 @@
   transform: translateX(-50%);
   background: rgba(black, 0.6);
   color: white;
+  border: 5px solid dimgray;
+
+  li:hover {
+    background: white;
+    color: black;
+  }
+
 }
 
 h1 {
@@ -35,6 +42,12 @@ h1 {
 }
 .topUsers {
   margin: 30px 15px 0 15px;
+
+  li .active {
+      background: white;
+      color: black;
+
+  }
 }
 
 select {
@@ -57,17 +70,15 @@ button {
   height: 700px;
   position: absolute;
   display: flex;
-  // flex-direction: column;
   flex-wrap: wrap;
-  // height: 40%;
   width: 100%;
-  top: 50%;
+  top: 60%;
   color: white;
 
   .top-twenty-text {
     position: absolute;
-    // top: 45%;
     height: 20px;
+    margin-bottom: 10px;
   }
 
 }
