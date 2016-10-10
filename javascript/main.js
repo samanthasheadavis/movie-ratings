@@ -2,13 +2,11 @@
 var user = {
     apiKey: '84d2690223f00a8cc05141e0c91c56b8',
 };
-var otherUsersArray = [];
-var avgRating = null;
-// console.log(otherUsersArray);
+
 //CONSTRUCTORS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 /**
- This constructor creates one movie object for the search results
+ This constructor creates one movie object for the search results or when a movie is clicked
 */
 function MovieInfo(movieObject) {
   console.log(movieObject);
@@ -24,15 +22,10 @@ function MovieInfo(movieObject) {
         // linkUrl: movieObject.link,
         // releaseDate: movieObject.release_date,
         // userRating: movieObject.user_rating,
-        //I think we will need to organize these two on the back end BEFORE they get to here to avoid a lot of extra steps
         avgRating: Math.round(movieObject.rating * 100)/100,
-        //then we will have to get these by doing a separate search for their rating?  Seems lengthy.  Too ambitious?
         // otherRatings: movieObject.other_ratings
     };
-    // console.log(this.info.otherUsers);
-  // getOtherUsers(this.info.movieId);
-  // getAvgRating(this.info.movieId);
-    //This formats the data to be inserted into the Handlebars template in the HTML
+
     this.createElements = function() {
         var source = $("#movie-template").html();
         var template = Handlebars.compile(source);
@@ -40,10 +33,8 @@ function MovieInfo(movieObject) {
             movieId: this.info.movieId,
             title: this.info.title,
             // link: this.info.link,
-            // date: this.info.releaseDate,
             // userRating: this.info.userRating,
             avgRating: this.info.avgRating,
-            //Starting to feel like this is a lot of info to jockey around. Unless back end can give us a single node with all the other users and their attached ratings this may be too much
             otherUsers: this.info.otherUsers
             // otherRatings: this.info.other_ratings
         };
@@ -54,8 +45,9 @@ function MovieInfo(movieObject) {
 
     this.createElements();
 }
+
 /**
- This constructor creates smaller movie objects for the top twenty
+ This constructor creates smaller movie objects for the top twenty and other users movies.
 */
 function TopTwenty(movieObject, index) {
     var listNumber = index + 1;
@@ -65,7 +57,7 @@ function TopTwenty(movieObject, index) {
         userRating: movieObject.score,
         // avgRating: movieObject.avg_rating
     };
-    //This formats the data to be inserted into the Handlebars template in the HTML.  It's possible we don't really need to use Handlebars here.  The Html for this can exist on load and just the values would be
+
     this.createElements2 = function() {
         var source = $("#top-twenty-template").html();
         var template = Handlebars.compile(source);
@@ -105,12 +97,11 @@ function movieSearch(searchString) {
     $.get('http://localhost:9393/api/get/movie/' + encodeURIComponent(searchString), function(response) {
         $('.search-result').html('');
         return new MovieInfo(response);
-
     });
 }
 
 /**
- This call will return info for the "otherUsers" selected and push for 5 MovieInfo objects to be created
+Request call for five other movies the selected user has rated
  */
 function getOtherUserMovies(userId) {
   $('.top-twenty').html('');
@@ -121,14 +112,19 @@ function getOtherUserMovies(userId) {
       }
     });
 }
-// call for average rating given user id
+
+/**
+ Call for average rating given user id
+ */
 function getAvgRating(userId) {
   $.get('http://localhost:9393/api/ratings/movie/avg/' + userId, function(response) {
     avgRating = response;
   });
 }
 
-// This call handles rating functions and links to the deleteRating function
+/**
+Call to post ratings given user ID.
+*/
 function rateMovie(movieId, userId, score) {
     if (movieRating === 'delete') {
         deleteRating(movieId);
@@ -138,9 +134,9 @@ function rateMovie(movieId, userId, score) {
     }
 
 
-//call to delete user rating
-// function deleteRating(movieId) {
-//   $.delete('http://localhost:9393/api/post/ratings/post/' + movieId + '/1700');
+/**
+Call to delete a rating for a given user.
+*/ //$.delete('http://localhost:9393/api/post/ratings/post/' + movieId + '/1700');
 //   function(response) {
 //         console.log(response);
 //     });
@@ -157,19 +153,20 @@ $('form').submit(function(event) {
     movieSearch(searchString);
 });
 
-//EVENT DELEGATOR:  OtherUser click
+//EVENT DELEGATOR:  OtherUserMovies click
 $('.container').on('click', '.users', function(event) {
   var userIdOnClick = $(this).html();
   $('.top-twenty-text').html('User # ' + userIdOnClick + ' Top Five Movies');
     getOtherUserMovies(userIdOnClick);
 });
 
-// EVENT DELEGATOR;  Tp twenty to searchString
+// EVENT DELEGATOR;  Top twenty to movieSearch
 $('.container').on('click', '.movies-container', function(event) {
   var topTwentyOnClick = $(this).find('span').html();
   console.log(topTwentyOnClick);
   movieSearch(topTwentyOnClick);
 });
+
 /**
 EVENT DELEGATORS:  Drop down ratings box
 */
