@@ -1,5 +1,5 @@
 #Clean Final
-require_relative 'environment'
+# require_relative 'environment'
 require 'active_record'
 
 class CreateTables < ActiveRecord::Migration[5.0]
