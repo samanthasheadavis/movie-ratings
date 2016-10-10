@@ -81,7 +81,7 @@ function TopTwenty(movieObject, index) {
  Top twenty request call. IIF
  */
  (function() {
-   $.get('http://localhost:9393/api/twenty/movies', function(response) {
+   $.get('https://gentle-brushlands-84898.herokuapp.com/api/twenty/movies', function(response) {
      for (var index =0; index<20; index++) {
        new TopTwenty(response[index], index);
      }
@@ -94,7 +94,7 @@ function TopTwenty(movieObject, index) {
  */
 function movieSearch(searchString) {
 
-    $.get('http://localhost:9393/api/get/movie/' + encodeURIComponent(searchString), function(response) {
+    $.get('https://gentle-brushlands-84898.herokuapp.com/api/get/movie/' + encodeURIComponent(searchString), function(response) {
         $('.search-result').html('');
         return new MovieInfo(response);
     });
@@ -105,7 +105,7 @@ Request call for five other movies the selected user has rated
  */
 function getOtherUserMovies(userId) {
   $('.top-twenty').html('');
-    $.get('http://localhost:9393/api/ratings/top/' + userId, function(response) {
+    $.get('https://gentle-brushlands-84898.herokuapp.com/api/ratings/top/' + userId, function(response) {
       for (count = 0; count < 5; count++) {
         console.log(response[count]);
         new TopTwenty(response[count], count);
@@ -117,7 +117,7 @@ function getOtherUserMovies(userId) {
  Call for average rating given user id
  */
 function getAvgRating(userId) {
-  $.get('http://localhost:9393/api/ratings/movie/avg/' + userId, function(response) {
+  $.get('https://gentle-brushlands-84898.herokuapp.com/api/ratings/movie/avg/' + userId, function(response) {
     avgRating = response;
   });
 }
@@ -125,18 +125,18 @@ function getAvgRating(userId) {
 /**
 Call to post ratings given user ID.
 */
-function rateMovie(movieId, userId, score) {
-    if (movieRating === 'delete') {
-        deleteRating(movieId);
-    } else {
-      $.post('http://localhost:9393/api/post/ratings/post/' + movieId + '/1700/' + score);
-        }
-    }
+// function rateMovie(movieId, userId, score) {
+//     if (movieRating === 'delete') {
+//         deleteRating(movieId);
+//     } else {
+//       $.post('https://gentle-brushlands-84898.herokuapp.com/api/post/ratings/post/' + movieId + '/1700/' + score);
+//         }
+//     }
 
 
 /**
 Call to delete a rating for a given user.
-*/ //$.delete('http://localhost:9393/api/post/ratings/post/' + movieId + '/1700');
+*/ //$.delete('https://gentle-brushlands-84898.herokuapp.com/api/post/ratings/post/' + movieId + '/1700');
 //   function(response) {
 //         console.log(response);
 //     });
