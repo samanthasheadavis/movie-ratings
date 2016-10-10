@@ -1,6 +1,6 @@
 #Clean Final
 require 'csv'
-require_relative 'schema'
+require_relative 'db/migrate/001_create_tables'
 require_relative 'environment'
 require_relative 'movie'
 require_relative 'rating'
