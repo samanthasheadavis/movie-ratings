@@ -13,9 +13,13 @@ configure do
 end
 
 before do
+  ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
   content_type :json
 end
 
+after do
+  ActiveRecord::Base.connection.close
+end
 options '/*' do
   response["Access-Control-Allow-Headers"] = "origin, x-requested-with, content-type"
 end
