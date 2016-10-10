@@ -1,3 +1,4 @@
+#Clean Final
 require 'active_record'
 
 class Rating < ActiveRecord::Base

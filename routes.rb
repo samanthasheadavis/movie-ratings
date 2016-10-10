@@ -1,3 +1,4 @@
+#Clean Final
 require 'sinatra'
 require 'active_record'
 require_relative 'movie'
@@ -46,10 +47,6 @@ get '/api/twenty/movies' do
   movie.to_json
 end
 
-get '/api/delete/movie/:id' do |id|
-  movie = Movie.find_by(id: id)
-  movie.to_json
-end
 
 post '/api/post/ratings/post' do
   rating = Rating.new(movie_id: params[:movie_id], user_id: params[:user_id], score: params[:score])
