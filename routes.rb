@@ -12,8 +12,9 @@ configure do
   enable :cross_origin
 end
 
+ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
+
 before do
-  ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
   content_type :json
 end
 
