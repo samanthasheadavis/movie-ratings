@@ -101,7 +101,8 @@ form {
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.6);
   color: white;
-  border: 5px solid dimgray; }
+  border: 5px solid dimgray;
+  background-image: url("http://gph.is/2beHmi1"); }
   .search-result li:hover {
     background: white;
     color: black; }
