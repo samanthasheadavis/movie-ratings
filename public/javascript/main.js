@@ -94,7 +94,7 @@ function TopTwenty(movieObject, index) {
  */
 function movieSearch(searchString) {
 
-    $.get('https://gentle-brushlands-84898.herokuapp.com/api/get/movie/' + encodeURIComponent(searchString), function(response) {
+    $.get('https://gentle-brushlands-84898.herokuapp.com/api/get/movie/' + encodeURIComponent(searchString), function(response){ 
         $('.search-result').html('');
         return new MovieInfo(response);
     });
