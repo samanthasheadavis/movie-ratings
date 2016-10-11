@@ -93,7 +93,6 @@ function TopTwenty(movieObject, index) {
  Search request call
  */
 function movieSearch(searchString) {
-
     $.get('http://localhost:9393/api/get/movie/' + encodeURIComponent(searchString), function(response) {
         $('.search-result').html('');
         return new MovieInfo(response);
