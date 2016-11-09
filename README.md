@@ -11,7 +11,6 @@ To-Do:
 * Back End - Deploy to heroku
 * Back End - Route to show top twenty movies by average rating
 
-[See it on GitHub Pages](https://samanthasheadavis.github.io/movie-ratings/)
 #### Languages/Tools
 * JavaScript
 * JQuery/Ajax
